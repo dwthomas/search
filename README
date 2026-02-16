@@ -13,3 +13,9 @@ search/learnh/lms needs lapack:
 	liblapack-dev
 
 Clang versions less than 3.0 do not seem to work.
+
+
+
+Commands: 
+
+For MovingAI scenarios: '''./scenario_solver astar -maproot MovingAI\ benchmarks/ -entry 129 < MovingAI\ benchmarks/arena.map.scen'''

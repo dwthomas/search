@@ -113,6 +113,17 @@ public:
 		return *p;
 	}
 
+	void remove(Node * n){
+		heap.remove(n);
+	}
+
+	Node* peek(){
+		boost::optional<Node*> p = heap.front();
+		if (!p)
+			return nullptr;
+		return *p;
+	}
+
 	void pre_update(Node *n) {
 	}
 
@@ -141,6 +152,8 @@ public:
 
 private:
 	struct Heapops {
+		static long getind(Node* n){ return Ops::getind(n);}
+
  		static bool pred(Node *a, Node *b) { return Ops::pred(a, b); }
 
 		static void setind(Node *n, int i) { Ops::setind(n, i); }

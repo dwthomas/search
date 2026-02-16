@@ -1,6 +1,7 @@
 // Copyright © 2013 the Search Authors under the MIT license. See AUTHORS for the list of authors.
 #pragma once
 
+#include <iostream>
 #include <vector>
 #include <boost/optional.hpp>
 
@@ -175,6 +176,7 @@ private:
 	// means that the element is not in the priority queue and i >= 0
 	// means that the element is at the given index. O(lg n) time.
 	void remove(long i) {
+		// std::cerr << "removing i=" << i << " of " << size() << "\n";
 		if (i  < 0)
 			fatal("Removing an invalid heap index: %ld, size=%lu\n", i, heap.size());
 		else {

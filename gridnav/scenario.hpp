@@ -34,6 +34,7 @@ struct Scenario {
 
 	void run(std::istream&);
 	GridMap *getmap(std::string);
+	double suboptBound() const { return subopt_bound; }
 
 private:
 	void checkver(std::istream&);
@@ -45,4 +46,5 @@ private:
 	GridMap *lastmap;
 	Result<GridNav> res;
 	int entry, nentries;
+	double subopt_bound;
 };

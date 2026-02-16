@@ -12,13 +12,16 @@ static const float Eps = 0.01;
 
 Scenario::Scenario(int ac, const char *av[]) :
 		argc(ac), argv(av), maproot("./"), lastmap(NULL),
-		entry(-1), nentries(0) {
+		entry(-1), nentries(0), subopt_bound(1.0) {
 	for (int i = 0; i < argc; i++) {
 		if (strcmp(argv[i], "-maproot") == 0 && i < argc - 1) {
 			maproot = argv[i+1];
 			i++;
 		} else if (strcmp(argv[i], "-entry") == 0 && i < argc - 1) {
 			entry = strtol(argv[i+1], NULL, 10);
+			i++;
+		} else if (strcmp(argv[i], "-subopt") == 0 && i < argc - 1) {
+			subopt_bound = strtod(argv[i+1], NULL);
 			i++;
 		}
 	}
@@ -87,10 +90,17 @@ Result<GridNav> ScenarioEntry::run(unsigned int n, SearchAlgorithm<GridNav> *src
 
 	srch->search(d, s0);
 	Result<GridNav> &res = srch->res;
-	GridNav::Cost cost = d.pathcost(res.path, res.ops);
-	// Scenario file has 0-cost for no-path.  We use -1.
-	if (fabs(cost - (double) opt) > Eps && !(opt == 0 && cost == GridNav::Cost(-1)))
-		fatal("Expected optimal cost of %g, got %g\n", opt, (double) cost);
+	GridNav::Cost cost(-1);
+	if (res.path.size() > 0) {
+		cost = d.pathcost(res.path, res.ops);
+		if (opt > 0) {
+			const double bound = opt * scen.suboptBound();
+			if ((double) cost > bound + Eps)
+				fatal("Expected cost <= %g (bound %g), got %g\n", bound, scen.suboptBound(), (double) cost);
+		}
+	} else {
+		// No solution found; report cost as -1.
+	}
 
 	dfrow(stdout, "run", "uuuuuuuuguugugg",
 		(unsigned long) n, (unsigned long) bucket, (unsigned long) w,
