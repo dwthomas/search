@@ -139,13 +139,16 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 		for (int i = 0; i < argc; i++) {
 			if (i < argc - 1 && strcmp(argv[i], "-wt") == 0)
 				wt = strtod(argv[++i], NULL);
+			if (i < argc - 1 && strcmp(argv[i], "-width") == 0)
+				width = atoi(argv[++i]);
 			if (strcmp(argv[i], "-dropdups") == 0)
 				dropdups = true;
 		}
 
 		if (wt < 1)
 			fatal("Must specify a weight ≥1 weight using -wt");
-
+		if (width < 1)
+			fatal("Must specify a >0 beam width using -width");
 		nodes = new Pool<Node>();
 	}
 
@@ -159,17 +162,26 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 			bestDHat = *focal.front();
 		}
 		//   Node *bestFHat = open.front();
+		// std::cerr << "cleanup front\n";
+		if (cleanup.empty()){
+			// std::cerr << "cleanup empty:\n";
+		}
+		else {
+			// std::cerr << "cleanup not empty:\n";
+		}
 		Node *bestF = *cleanup.front();
-
+		// std::cerr << "post-cleaup front\n";
 		//   auto ss = SearchState(search_state++);
 
 		// if(ss.is_d() && bestDHat && bestDHat->fhat <= wt*bestF->f) {
 		if(focal.empty()){
+			// std::cerr << "focal empty:\n";
 			cleanup.remove(bestF);
+			// std::cerr << "returning bestF\n";
 			if(bestF->focalind >= 0) {
 				focal.remove(bestF);
 			}
-		return bestF;
+			return bestF;
 		}
 		focal.remove(bestDHat);
 		cleanup.remove(bestDHat);
@@ -181,7 +193,7 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 		closed.init(d);
 
 		Node *n0 = init(d, s0);
-		closed.add(n0);
+		// closed.add(n0);
 		focal.push(n0);
 		cleanup.push(n0);
 
@@ -199,15 +211,71 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 		// open.updateCursor(dummy, isIncrease);
 
 		while (!cleanup.empty() && !SearchAlgorithm<D>::limit()) {
-			Node *n = select_node();
-			State buf, &state = d.unpack(buf, n->state);
+			Node **beam = new Node*[width];
+			int c = 0;
+			while(c < width && !focal.empty()) {
+				// std::cerr << "making beam\n";
+				// process focal into beam
+				Node *n = select_node(); // focal is not empty, so will be from focal
+				// unsigned long hash = n->state.hash(&d);
+				// Node *dup = closed.find(n->state, hash);
+				// if(!dup) {
+				// //   closed.add(n, hash);
+				// } else {
+				// 	std::cerr << "duplicate!" << std::endl;
+				//   SearchAlgorithm<D>::res.dups++;
+				//   if(!dropdups && n->g < dup->g) {
+				// 	SearchAlgorithm<D>::res.reopnd++;
+					
+				// 	dup->f = dup->f - dup->g + n->g;
+				// 	dup->g = n->g;
+				// 	dup->d = n->d;
+				// 	dup->parent = n->parent;
+				// 	dup->op = n->op;
+				// 	dup->pop = n->pop;
+				//   } else {
+				// 	continue;
+				//   }
+				// }
 
-			if (d.isgoal(state)) {
-				solpath<D, Node>(d, n, this->res);
-				break;
+				beam[c] = n;
+				c++;
 			}
+			// std::cerr << "beam size: " << c << std::endl;
+			
+			if (c == 0){
+				// Do A* expansion
+				// std::cerr << "A expansion: " << std::endl;
+				Node *n = select_node();
+				// std::cerr << "node selected" << std::endl;
+				State buf, &state = d.unpack(buf, n->state);
 
-			expand(d, n, state);
+				if (d.isgoal(state)) {
+					solpath<D, Node>(d, n, this->res);
+					break;
+				}
+
+				expand(d, n, state);
+			}
+			else{
+				// std::cerr << "Beam expansion: " << std::endl;
+				bool done = false;
+				// Do beam expansions, make sure the nodes get deleted when removed from A* heap
+				for(int i = 0; i < c && !done && !SearchAlgorithm<D>::limit(); i++) {
+					Node *n = beam[i];
+					State buf, &state = d.unpack(buf, n->state);
+					if (d.isgoal(state)) {
+						solpath<D, Node>(d, n, this->res);
+						done = true;
+						break;
+					}
+					expand(d, n, state);
+				}
+				if (done){
+					break;
+				}
+			}
+			delete[] beam;
 		}
 		this->finish();
 	}
@@ -234,6 +302,11 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 	}
 
 private:
+
+	Cost fmin(){
+		Node * bestF = *cleanup.front();
+		return bestF->f;
+	}
 
 	void expand(D &d, Node *n, State &state) {
 		SearchAlgorithm<D>::res.expd++;
@@ -274,11 +347,11 @@ private:
 				dup->op = ops[i];
 				dup->pop = e.revop;
 				cleanup.pushupdate(dup, dup->cleanupind);
-				// if(dup->fhat <= wt * fhatmin) {
-				// 	focal.pushupdate(dup, dup->focalind);
-				// } else if(dup->focalind >= 0) {
-				// 	focal.remove(dup);
-				// }
+				if(dup->f <= wt * fmin()) {
+				 	focal.pushupdate(dup, dup->focalind);
+				 } else if(dup->focalind >= 0) {
+					focal.remove(dup);
+				}
 				nodes->destruct(kid);
  
 				if (!bestkid || dup->f < bestkid->f)
@@ -296,9 +369,9 @@ private:
 				kid->pop = e.revop;
 				closed.add(kid, hash);
 				cleanup.push(kid);
-				// if(kid->fhat <= wt * fhatmin) {
-				// 	focal.push(kid);
-				// }
+				if(kid->f <= wt * fmin()) {
+					focal.push(kid);
+				}
  
 				if (!bestkid || kid->f < bestkid->f)
 					bestkid = kid;
@@ -348,6 +421,7 @@ private:
 
 	bool dropdups;
 	double wt;
+	int width;
 	BinHeap<DHatOps, Node*> focal;
 	BinHeap<FOps, Node*> cleanup;
  	ClosedList<Node, Node, D> closed;
