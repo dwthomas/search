@@ -1,6 +1,7 @@
 // Copyright © 2013 the Search Authors under the MIT license. See AUTHORS for the list of authors.
 #include "../search/search.hpp"
 #include "../utils/pool.hpp"
+#include "closedlist.hpp"
 #include <cstddef>
 
 void fatal(const char*, ...);	// utils.hpp
@@ -11,6 +12,9 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 	typedef typename D::PackedState PackedState;
 	typedef typename D::Cost Cost;
 	typedef typename D::Oper Oper;
+
+	std::size_t n_beam_expansions = 0;
+	std::size_t n_astar_expansions = 0;
 
 	// struct SearchState{
 	// 	private:
@@ -244,6 +248,7 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 			// std::cerr << "beam size: " << c << std::endl;
 			
 			if (c == 0){
+				n_astar_expansions++;
 				// Do A* expansion
 				// std::cerr << "A expansion: " << std::endl;
 				Node *n = select_node();
@@ -270,6 +275,7 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 						break;
 					}
 					expand(d, n, state);
+					n_beam_expansions++;
 				}
 				if (done){
 					break;
@@ -299,6 +305,9 @@ template <class D> struct BSBS : public SearchAlgorithm<D> {
 		dfpair(stdout, "weight", "%lg", wt);
 		dfpair(out, "h error last", "%g", herror);
 		dfpair(out, "d error last", "%g", derror);
+		dfpair(stdout, "width", "%u", width);
+		dfpair(stdout, "Astar expansions", "%u", n_astar_expansions);
+		dfpair(stdout, "beam expansions", "%u", n_beam_expansions);
 	}
 
 private:
