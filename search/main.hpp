@@ -26,6 +26,8 @@
 #include "aees.hpp"
 #include "ucs.hpp"
 #include "rrd.hpp"
+#include "rrdnofocal.hpp"
+#include "rrdnoopen.hpp"
 #include "bsbs.hpp"
 #include <cstddef>
 #include <cstdio>
@@ -137,6 +139,10 @@ template<class D> SearchAlgorithm<D> *getsearch(int argc, const char *argv[]) {
 		return new EES<D>(argc, argv);
 	else if (strcmp(argv[1], "rrd") == 0)
 		return new RRD<D>(argc, argv);
+	else if (strcmp(argv[1], "rrdnofocal") == 0)
+		return new RRDNoFocal<D>(argc, argv);
+	else if (strcmp(argv[1], "rrdnoopen") == 0)
+		return new RRDNoOpen<D>(argc, argv);
 	else if (strcmp(argv[1], "bsbs") == 0)
 		return new BSBS<D>(argc, argv);
 	else if (strcmp(argv[1], "aees") == 0)
