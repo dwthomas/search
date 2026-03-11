@@ -1,14 +1,18 @@
-command =  "./tiles/15md_solver {algorithm}  -wt {subopt} -width {width} < /home/aifs2/group/data/tiles_instances/korf/4/4/{korfnum} > ./results/{outfile}" 
+command =  "/home/aifs2/dwr29/search/tiles/15md_solver {algorithm}  -wt {subopt} -width {width} < /home/aifs2/group/data/tiles_instances/korf/4/4/{korfnum} > /home/aifs2/dwr29/search/results/{outfile}" 
 widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
 weights = [1.03, 1.05, 1.1, 1.3, 1.5, 2, 3, 5, 10]
 
 korf_nums = list(range(1, 101))
 
 algorithms = {
-    "astar": {"width": False, "weight": False},
-    "wastar": {"width": False, "weight": True},
-     "bead": {"width": True, "weight": False},
-     "bsbs": {"width": True, "weight": True}
+    #"astar": {"width": False, "weight": False},
+    #"wastar": {"width": False, "weight": True},
+    # "bead": {"width": True, "weight": False},
+    # "bsbs": {"width": True, "weight": True},
+    "rrd": {"width": False, "weight": True},
+    "rrdnofocal": {"width": False, "weight": True},
+    "rrdnoopen": {"width": False, "weight": True},
+    "ees": {"width": False, "weight": True},
 }
 
 
