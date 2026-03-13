@@ -285,7 +285,7 @@ template <class D> struct BoundedRectangleBeadSearch : public SearchAlgorithm<D>
 				delta_height = strtod(argv[++i], NULL);
 			if (i < argc - 1 && strcmp(argv[i], "-dB") == 0)
 				delta_base = strtod(argv[++i], NULL);
-			if (i < argc - 1 && strcmp(argv[i], "-bf") == 0)
+			if (i < argc - 1 && strcmp(argv[i], "-wt") == 0)
 				bounded_factor = strtod(argv[++i], NULL);
 			if (strcmp(argv[i], "-dump") == 0)
 				dump = true;
