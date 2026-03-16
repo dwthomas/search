@@ -212,6 +212,9 @@ template <class D> struct BSBSFLAYER : public SearchAlgorithm<D> {
 		dummy->f = n0->g + n0->h;
 		dummy->dhat = wt * dummy->d;
 
+		std::size_t biggest_beam = 1;
+		std::size_t current_beam = 1;
+
 		// open.updateCursor(dummy, isIncrease);
 
 		while (!cleanup.empty() && !SearchAlgorithm<D>::limit()) {
@@ -248,13 +251,17 @@ template <class D> struct BSBSFLAYER : public SearchAlgorithm<D> {
 			// std::cerr << "beam size: " << c << std::endl;
 			
 			if (c == 0){
+				if (current_beam > biggest_beam) {
+					biggest_beam = current_beam;
+				}
 				
+
 				auto f_min = fmin();
 				auto curf = f_min;
 				int astar_exps = 0;
 				// Do A* expansion
 				// std::cerr << "A expansion: " << std::endl;
-				while (!cleanup.empty() && !SearchAlgorithm<D>::limit() && curf <= f_min && astar_exps < width) {
+				while (!cleanup.empty() && !SearchAlgorithm<D>::limit() && curf <= f_min && astar_exps < current_beam) {
 					n_astar_expansions++;
 					astar_exps++;
 					Node *n = select_node(true);
@@ -269,8 +276,10 @@ template <class D> struct BSBSFLAYER : public SearchAlgorithm<D> {
 					expand(d, n, state);
 					curf = n->f;
 				}
+				current_beam = 1;
+				
 				// std::cerr << "Raised f_min from " << f_min << " to " << curf << "in " << astar_exps << " expansions" << std::endl;
-				// std::cerr << "focal size: " << focal.size() << std::endl;
+				// std::cerr << "focal size: " << focal.size() << " current beam: " << current_beam << " biggest beam: " << biggest_beam << std::endl;
 			}
 			else{
 				// std::cerr << "Beam expansion: " << std::endl;
@@ -286,6 +295,7 @@ template <class D> struct BSBSFLAYER : public SearchAlgorithm<D> {
 					}
 					expand(d, n, state);
 					n_beam_expansions++;
+					current_beam++;
 				}
 				if (done){
 					break;
