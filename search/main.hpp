@@ -29,6 +29,7 @@
 #include "rrdnofocal.hpp"
 #include "rrdnoopen.hpp"
 #include "bsbs.hpp"
+#include "bsbsflayer.hpp"
 #include <cstddef>
 #include <cstdio>
 
@@ -145,6 +146,8 @@ template<class D> SearchAlgorithm<D> *getsearch(int argc, const char *argv[]) {
 		return new RRDNoOpen<D>(argc, argv);
 	else if (strcmp(argv[1], "bsbs") == 0)
 		return new BSBS<D>(argc, argv);
+	else if (strcmp(argv[1], "bsbsflayer") == 0)
+		return new BSBSFLAYER<D>(argc, argv);
 	else if (strcmp(argv[1], "aees") == 0)
 		return new AnytimeEES<D>(argc, argv);
 	else if (strcmp(argv[1], "ucs") == 0)
