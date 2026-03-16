@@ -30,6 +30,7 @@
 #include "rrdnoopen.hpp"
 #include "bsbs.hpp"
 #include "bsbsflayer.hpp"
+#include "bsbsfill.hpp"
 #include <cstddef>
 #include <cstdio>
 
@@ -148,6 +149,8 @@ template<class D> SearchAlgorithm<D> *getsearch(int argc, const char *argv[]) {
 		return new BSBS<D>(argc, argv);
 	else if (strcmp(argv[1], "bsbsflayer") == 0)
 		return new BSBSFLAYER<D>(argc, argv);
+	else if (strcmp(argv[1], "bsbsfill") == 0)
+		return new BSBSFILL<D>(argc, argv);
 	else if (strcmp(argv[1], "aees") == 0)
 		return new AnytimeEES<D>(argc, argv);
 	else if (strcmp(argv[1], "ucs") == 0)

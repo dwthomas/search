@@ -17,6 +17,7 @@ algorithms = {
     # "bead": {"width": True, "weight": False, "aspect": False},
     # "bsbs": {"width": True, "weight": True, "aspect": False},
     "bsbsflayer": {"width": True, "weight": True, "aspect": False},
+    "bsbsfill": {"width": True, "weight": True, "aspect": False},
     # "rrd": {"width": False, "weight": True, "aspect": False},
     # "rrdnofocal": {"width": False, "weight": True, "aspect": False},
     # "rrdnoopen": {"width": False, "weight": True, "aspect": False},
