@@ -9,16 +9,17 @@ costs = ["unit", "heavy", "inverse"]
 # aspects = [1, 100]
 
 algorithms = {
-    "astar": {"width": False, "weight": False, "aspect": False},
+    # "astar": {"width": False, "weight": False, "aspect": False},
     # "rectangle": {"width": False, "weight": False, "aspect": True},
     # "boundedrectangle": {"width": False, "weight": True, "aspect": True},
-    "wastar": {"width": False, "weight": True, "aspect": False},
-    "bead": {"width": True, "weight": False, "aspect": False},
-    "bsbs": {"width": True, "weight": True, "aspect": False},
-    "rrd": {"width": False, "weight": True, "aspect": False},
-    "rrdnofocal": {"width": False, "weight": True, "aspect": False},
-    "rrdnoopen": {"width": False, "weight": True, "aspect": False},
-    "ees": {"width": False, "weight": True, "aspect": False},
+    # "wastar": {"width": False, "weight": True, "aspect": False},
+    "wastar -dropdups": {"width": False, "weight": True, "aspect": False},
+    # "bead": {"width": True, "weight": False, "aspect": False},
+    # "bsbs": {"width": True, "weight": True, "aspect": False},
+    # "rrd": {"width": False, "weight": True, "aspect": False},
+    # "rrdnofocal": {"width": False, "weight": True, "aspect": False},
+    # "rrdnoopen": {"width": False, "weight": True, "aspect": False},
+    # "ees": {"width": False, "weight": True, "aspect": False},
 }
 
 for cost in costs:
