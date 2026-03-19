@@ -1,7 +1,7 @@
 command =  "/home/aifs2/dwr29/search/tiles/15md_solver {algorithm} -cost {cost} -wt {subopt} -width {width} < /home/aifs2/group/data/tiles_instances/korf/4/4/{korfnum} > /home/aifs2/dwr29/search/results/{outfile}" 
 widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
 weights = [1.03, 1.05, 1.07, 1.1, 1.2, 1.3, 1.4, 1.5, 1.7,  2, 2.25, 2.8, 3, 5, 10]
-# weights = [2.25, 2.8]
+weights = [1.03, 1.07, 1.2, 1.4, 1.7,  2, 3]
 korf_nums = list(range(1, 101))
 
 costs = ["unit", "heavy", "inverse"]

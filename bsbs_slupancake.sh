@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=bsbs   # Job name
+#SBATCH --job-name=bsbspk   # Job name
 #SBATCH --mail-type=NONE            # Mail events (NONE, BEGIN, END, FAIL, ALL)
 #SBATCH --mail-user=dwt@cs.unh.edu   # Where to send mail	
 #SBATCH --ntasks=1                  # Run a single task
