@@ -5,6 +5,10 @@ widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
 weights = np.geomspace(1.03, 5, num=6)
 # weights = [1.03, 1.05, 1.07, 1.1, 1.2, 1.3, 1.4, 1.5, 1.7,  2, 2.25, 2.8, 3, 5, 10]
 # weights = [2.25, 2.8]
+widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
+widths = [4**i for i in range(6, 8)]  # [16, 64, 256, 1024]
+# weights = [1.03, 1.05, 1.07, 1.1, 1.2, 1.3, 1.4, 1.5, 1.7,  2, 2.25, 2.8, 3, 5, 10]
+# weights = [1.03, 1.07, 1.2, 1.4, 1.7,  2, 3]
 korf_nums = list(range(1, 101))
 
 costs = ["unit", "heavy", "inverse"]
@@ -12,17 +16,19 @@ costs = ["unit", "heavy", "inverse"]
 # aspects = [1, 100]
 
 algorithms = {
-    "wastar -dropdups": {"width": False, "weight": True, "aspect": False},
+    # "astar": {"width": False, "weight": False, "aspect": False},
+    # "rectangle": {"width": False, "weight": False, "aspect": True},
+    # "boundedrectangle": {"width": False, "weight": True, "aspect": True},
+    # "wastar": {"width": False, "weight": True, "aspect": False},
+    # "wastar -dropdups": {"width": False, "weight": True, "aspect": False},
+    # "bead": {"width": True, "weight": False, "aspect": False},
     "bsbs": {"width": True, "weight": True, "aspect": False},
-    "rrd": {"width": False, "weight": True, "aspect": False},
-    "bsbsflayer": {"width": True, "weight": True, "aspect": False},
-    "bsbsfill": {"width": True, "weight": True, "aspect": False},
-    "rrdnofocal": {"width": False, "weight": True, "aspect": False},
-    "rrdnoopen": {"width": False, "weight": True, "aspect": False},
-    "ees": {"width": False, "weight": True, "aspect": False},
-    "wastar": {"width": False, "weight": True, "aspect": False},
-    "astar": {"width": False, "weight": False, "aspect": False},
-    "bead": {"width": True, "weight": False, "aspect": False},
+    # "bsbsflayer": {"width": True, "weight": True, "aspect": False},
+    # "bsbsfill": {"width": True, "weight": True, "aspect": False},
+    # "rrd": {"width": False, "weight": True, "aspect": False},
+    # "rrdnofocal": {"width": False, "weight": True, "aspect": False},
+    # "rrdnoopen": {"width": False, "weight": True, "aspect": False},
+    # "ees": {"width": False, "weight": True, "aspect": False},
 }
 
 for cost in costs:
