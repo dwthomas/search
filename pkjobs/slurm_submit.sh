@@ -8,4 +8,4 @@
 #SBATCH --mem=60G
 #SBATCH --no-kill
 #SBATCH -p compute
-eval "/home/aifs2/dwr29/search/{jobs_dir}/job_${SLURM_ARRAY_TASK_ID}.sh"
+eval "/home/aifs2/dwr29/search/pkjobs/job_${SLURM_ARRAY_TASK_ID}.sh"
