@@ -3,7 +3,7 @@
 #SBATCH --mail-type=NONE
 #SBATCH --mail-user=dwt@cs.unh.edu
 #SBATCH --ntasks=1
-#SBATCH --array=1-128
+#SBATCH --array=1-256
 #SBATCH --time=15:5:00
 #SBATCH --mem=60G
 #SBATCH --no-kill

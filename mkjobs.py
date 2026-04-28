@@ -92,7 +92,7 @@ def main():
             f.write("#SBATCH --mem=60G\n")
             f.write("#SBATCH --no-kill\n")
             f.write("#SBATCH -p compute\n")
-            f.write('eval "job_${SLURM_ARRAY_TASK_ID}.sh"\n')
+            f.write(f'eval "/home/aifs2/dwr29/search/{jobs_dir.name}' + '/job_${SLURM_ARRAY_TASK_ID}.sh"\n')
         
         mode = slurm_path.stat().st_mode
         slurm_path.chmod(mode | stat.S_IXUSR | stat.S_IXGRP | stat.S_IXOTH)
