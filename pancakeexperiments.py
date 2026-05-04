@@ -1,5 +1,5 @@
 import numpy as np
-command =  "/home/aifs2/dwr29/search/pancake/50pancake_solver {algorithm} -cost {cost} -wt {subopt} -width {width} < /home/aifs2/group/data/pancake/instance/50/{korfnum} > /home/aifs2/dwr29/search/pancake_results/{outfile}" 
+command =  "/home/aifs2/dwr29/search/pancake/20pancake_solver {algorithm} -cost {cost} -wt {subopt} -width {width} < /home/aifs2/group/data/pancake/instance/20/{korfnum} > /home/aifs2/dwr29/search/pancake20_results/{outfile}" 
 
 widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
 weights = np.geomspace(1.01, 3, num=20)
@@ -11,7 +11,7 @@ widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
 # widths = [4**i for i in range(2, 8)]  # [16, 64, 256, 1024]
 # weights = [1.03, 1.05, 1.07, 1.1, 1.2, 1.3, 1.4, 1.5, 1.7,  2, 2.25, 2.8, 3, 5, 10]
 # weights = [1.03, 1.07, 1.2, 1.4, 1.7,  2, 3]
-korf_nums = list(range(1, 999))
+korf_nums = list(range(0, 50))
 
 costs = ["unit", "heavy", "inverse"]
 costs = ["unit"]
