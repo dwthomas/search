@@ -15,6 +15,7 @@ korf_nums = list(range(1, 999))
 
 costs = ["unit", "heavy", "inverse"]
 costs = ["unit"]
+costs = ["heavy", "inverse"]
 # aspects = [1, 100]
 
 algorithms = {
