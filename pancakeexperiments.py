@@ -1,7 +1,7 @@
 import numpy as np
 command =  "/home/aifs2/dwr29/search/pancake/20pancake_solver {algorithm} -cost {cost} -wt {subopt} -width {width} < /home/aifs2/group/data/pancake/instance/20/{korfnum} > /home/aifs2/dwr29/search/pancake20_results/{outfile}" 
 
-widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
+widths = [2**i for i in range(0, 4)]  # [16, 64, 256, 1024]
 weights = np.geomspace(1.01, 3, num=20)
 weights = weights[::2]
 
@@ -14,8 +14,8 @@ widths = [4**i for i in range(2, 6)]  # [16, 64, 256, 1024]
 korf_nums = list(range(0, 50))
 
 costs = ["unit", "heavy", "inverse"]
-costs = ["unit"]
-costs = ["heavy", "inverse"]
+# costs = ["unit"]
+# costs = ["heavy", "inverse"]
 # aspects = [1, 100]
 
 algorithms = {
